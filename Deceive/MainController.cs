@@ -467,9 +467,18 @@ internal class MainController : ApplicationContext
     private void LoadStatus()
     {
         if (File.Exists(StatusFile))
-            Status = File.ReadAllText(StatusFile) == "mobile" ? "mobile" : "offline";
+        {
+            Status = File.ReadAllText(StatusFile) switch
+            {
+                "mobile" => "mobile",
+                "chat" => "chat",
+                _ => "offline",
+            };
+        }
         else
+        {
             Status = "offline";
+        }
     }
 
     private void SaveStatus() => File.WriteAllText(StatusFile, Status);
